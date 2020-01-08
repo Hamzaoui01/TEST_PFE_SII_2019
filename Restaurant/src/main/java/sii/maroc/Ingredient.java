@@ -40,9 +40,11 @@ public class Ingredient {
 		// TODO Auto-generated method stub
 		if (!isUnlimited()) {
 			quantity -= quantityConsummed;
+			System.out.println("qauntity ="+quantity);
 			if (quantity < 0)
 				throw new UnavailableDishException("Unavailable Dish");
 		}
+		
 
 	}
 }

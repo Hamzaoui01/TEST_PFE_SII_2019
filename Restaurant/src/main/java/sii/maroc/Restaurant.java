@@ -111,7 +111,12 @@ public class Restaurant {
 		for(Entry<String,Integer> ingredientEntry:dishe.getKey().getRecipe().entrySet()) {
 			Ingredient ingredient=	getIngredientByNameFromStock(ingredientEntry.getKey());
 			if(ingredient!=null)
-			ingredient.consume(ingredientEntry.getValue());
+			{
+				for(int i=0;i<dishe.getValue();i++) {
+					ingredient.consume(ingredientEntry.getValue());
+				}
+			}
+			
 		}
 		
 	}
@@ -120,7 +125,7 @@ public class Restaurant {
 		// TODO Auto-generated method stub
 		for(Ingredient ingredient:stockIngredient) {
 			if(ingredient.getName().contains(name)||ingredient.getName().equals(name))return ingredient;
-		}
+		}		
 		return null;
 	}
 
