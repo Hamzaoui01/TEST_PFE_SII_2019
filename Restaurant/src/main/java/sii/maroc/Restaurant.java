@@ -118,9 +118,7 @@ public class Restaurant {
 
 	private Ingredient getIngredientByNameFromStock(String name) {
 		// TODO Auto-generated method stub
-		System.out.println("**********");
 		for(Ingredient ingredient:stockIngredient) {
-			System.out.println(ingredient.getName());
 			if(ingredient.getName().contains(name)||ingredient.getName().equals(name))return ingredient;
 		}
 		return null;

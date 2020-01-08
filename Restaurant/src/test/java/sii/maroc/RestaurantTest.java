@@ -32,6 +32,11 @@ public class RestaurantTest {
 // Allowed modification zone starts here
     @Test(expected=UnavailableDishException.class)
     public void shouldFailWhenOutOfStock(){
+    	 Restaurant restaurant = new Restaurant("6 balls Mozzarella", "20 tomatoes", "olive oil", "pepper");
+         Ticket ticket = restaurant.order("100 Tomato Mozzarella Salad");
+         Meal meal = restaurant.retrieve(ticket);       
+         assertThat(meal.servedDishes()).isEqualTo(1);
+         assertThat(meal.cookingDuration()).isEqualTo(6);
         Assert.fail();
     }
 // Allowed modification zone ends here
@@ -77,7 +82,6 @@ public class RestaurantTest {
         Ticket ticket = restaurant.order("3 Tomato Mozzarella Salad").and("2 Pizza");
         Meal meal = restaurant.retrieve(ticket);
         assertThat(meal.servedDishes()).isEqualTo(5);
-        System.out.println(meal.cookingDuration());
         assertThat(meal.cookingDuration()).isEqualTo(27);
     }
 
