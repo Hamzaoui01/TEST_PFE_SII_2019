@@ -8,7 +8,10 @@ public class Restaurant {
 
 	private List<Ingredient> stockIngredient = new ArrayList<Ingredient>();
 	static List<Dishe> dishes=new ArrayList<Dishe>();
-	
+
+/**
+ * Ces données sont partagé entre tout les instances de classes, sinon il doivent figurer dans le constructeur.	
+ */
 	static {
 		Dishe dishe=new Dishe("Tomato Mozzarella Salad",6);
 		dishe.addIngredientToRecipe("balls Mozzarella",1 );
@@ -30,14 +33,21 @@ public class Restaurant {
 		fillStock(ingredientsWithQuantity);
 
 	}
-
+/**
+ * cette methode remlit le stock des ingredients
+ * @param ingredientsWithQuantity
+ */
 	private void fillStock(String[] ingredientsWithQuantity) {
 		// TODO Auto-generated method stub
 		for (String ingredientWithQuantity : ingredientsWithQuantity) {
 			stockIngredient.add(createIngredient(ingredientWithQuantity));
 		}
 	}
-
+/**
+ * cette methode creer un nouveau ingredient par l entree de l'utilisateur.
+ * @param ingredientWithQuantity
+ * @return
+ */
 	private Ingredient createIngredient(String ingredientWithQuantity) {
 		
 		// TODO Auto-generated method stub
@@ -52,7 +62,11 @@ public class Restaurant {
 		return new Ingredient(ingredientWithQuantity, -1, true);
 
 	}
-
+/**
+ * test si un string ets u numéro
+ * @param stringToCheck
+ * @return
+ */
 	private boolean isNumber(String stringToCheck) {
 		// TODO Auto-generated method stub
 		try {
@@ -70,7 +84,11 @@ public class Restaurant {
 		Ticket ticket=new Ticket();	
 		return ticket.and(disheWithQuantity);
 	}
-	
+	/**
+	 * rretourn Dishe par son nom depuis la liste des dishe
+	 * @param name
+	 * @return
+	 */
 	public static Dishe getDisheByName(String name){
 		for(Dishe dishe:dishes) {
 			if(dishe.getName().contains(name))return dishe;
