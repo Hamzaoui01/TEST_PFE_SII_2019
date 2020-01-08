@@ -115,10 +115,8 @@ public class Restaurant {
 				for(int i=0;i<dishe.getValue();i++) {
 					ingredient.consume(ingredientEntry.getValue());
 				}
-			}
-			
-		}
-		
+			}			
+		}		
 	}
 
 	private Ingredient getIngredientByNameFromStock(String name) {
