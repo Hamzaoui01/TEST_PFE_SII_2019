@@ -4,69 +4,82 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
+import sii.maroc.Dishe.DisheBuilder;
+
 public class Restaurant {
 
 	private List<Ingredient> stockIngredient = new ArrayList<Ingredient>();
-	static List<Dishe> dishes=new ArrayList<Dishe>();
+	static List<Dishe> dishes = new ArrayList<Dishe>();
 
-/**
- * Ces données sont partagé entre tout les instances de classes, sinon il doivent figurer dans le constructeur.	
- */
+	/**
+	 * Ces données sont partagé entre tout les instances de classes, sinon il
+	 * doivent figurer dans le constructeur.
+	 */
 	static {
-		Dishe dishe=new Dishe("Tomato Mozzarella Salad",6);
-		dishe.addIngredientToRecipe("balls Mozzarella",1 );
-		dishe.addIngredientToRecipe("tomatoes",2 );
-		dishe.addIngredientToRecipe("olive oil",-1 );		
-		dishes.add(dishe);
-		Dishe pizza=new Dishe("Pizza",10);
-		dishe.addIngredientToRecipe("balls Mozzarella",1 );
-		dishe.addIngredientToRecipe("tomatoes",4 );
-		dishe.addIngredientToRecipe("olive oil",-1 );
-		dishe.addIngredientToRecipe("water",100 );
-		dishe.addIngredientToRecipe("Flour",300 );
-		dishe.addIngredientToRecipe("sea salt",-1 );
-		dishes.add(pizza);							
+		
+		dishes.add(
+				new DisheBuilder().name("Tomato Mozzarella Salad")
+							 .timeToPrepare(6)
+							 .needIgredient(new Ingredient("balls Mozzarella Salad", 1,false))
+							 .needIgredient(new Ingredient("tomatoes", 2, false))
+							 .needIgredient(new Ingredient("olive oil", -1,true ))
+							 .build()
+					);
+		
+		dishes.add(
+				new DisheBuilder().name("Pizza")
+							 .timeToPrepare(10)
+							 .needIgredient(new Ingredient("balls Mozzarella Salad", 1,false))
+							 .needIgredient(new Ingredient("tomatoes", 4, false))
+							 .needIgredient(new Ingredient("olive oil", -1,true ))
+							 .needIgredient(new Ingredient("water", 100, false))
+							 .needIgredient(new Ingredient("Flour", 300, false))
+							 .needIgredient(new Ingredient("sea salt", -1, true))
+							 .build()
+					);		
 	}
-	
+
 	public Restaurant(String... ingredientsWithQuantity) {
 		// TODO Auto-generated constructor stub
 		fillStock(ingredientsWithQuantity);
 
 	}
-/**
- * cette methode remlit le stock des ingredients
- * @param ingredientsWithQuantity
- */
+
+	/**
+	 * cette methode remlit le stock des ingredients
+	 * 
+	 * @param ingredientsWithQuantity
+	 */
 	private void fillStock(String[] ingredientsWithQuantity) {
 		// TODO Auto-generated method stub
 		for (String ingredientWithQuantity : ingredientsWithQuantity) {
 			stockIngredient.add(createIngredient(ingredientWithQuantity));
 		}
 	}
-/**
- * cette methode creer un nouveau ingredient par l entree de l'utilisateur.
- * @param ingredientWithQuantity
- * @return
- */
+
+	/**
+	 * cette methode creer un nouveau ingredient par l entree de l'utilisateur.
+	 * 
+	 * @param ingredientWithQuantity
+	 * @return
+	 */
 	private Ingredient createIngredient(String ingredientWithQuantity) {
-		
-		// TODO Auto-generated method stub
 		String[] ingredientWithQuantityArray = ingredientWithQuantity.split(" ");
-		
-		if (isNumber(ingredientWithQuantityArray[0])) {			
+		if (isNumber(ingredientWithQuantityArray[0])) {
 			String name = ingredientWithQuantity.substring(ingredientWithQuantity.indexOf(" ") + 1);
 			int quantity = Integer.parseInt(ingredientWithQuantityArray[0]);
 			Ingredient ingredient = new Ingredient(name, quantity, false);
 			return ingredient;
-		}	
+		}
 		return new Ingredient(ingredientWithQuantity, -1, true);
-
 	}
-/**
- * test si un string ets u numéro
- * @param stringToCheck
- * @return
- */
+
+	/**
+	 * test si un string ets u numéro
+	 * 
+	 * @param stringToCheck
+	 * @return
+	 */
 	private boolean isNumber(String stringToCheck) {
 		// TODO Auto-generated method stub
 		try {
@@ -76,30 +89,32 @@ public class Restaurant {
 			// TODO: handle exception
 			return false;
 		}
-
-	}	
+	}
 
 	public Ticket order(String disheWithQuantity) {
 		// TODO Auto-generated method stub
-		Ticket ticket=new Ticket();	
+		Ticket ticket = new Ticket();
 		return ticket.and(disheWithQuantity);
 	}
+	
 	/**
 	 * rretourn Dishe par son nom depuis la liste des dishe
+	 * 
 	 * @param name
 	 * @return
 	 */
-	public static Dishe getDisheByName(String name){
-		for(Dishe dishe:dishes) {
-			if(dishe.getName().contains(name))return dishe;
-		}		
+	public static Dishe getDisheByName(String name) {
+		for (Dishe dishe : dishes) {
+			if (dishe.getName().contains(name))
+				return dishe;
+		}
 		return null;
 	}
 
 	public Meal retrieve(Ticket ticket) {
 		// TODO Auto-generated method stub
-		Meal meal=new Meal();
-		for(Entry<Dishe, Integer>  dishe:ticket.getDishesOrdred().entrySet()) {
+		Meal meal = new Meal();
+		for (Entry<Dishe, Integer> dishe : ticket.getDishesOrdred().entrySet()) {
 			consumeIngredient(dishe);
 			meal.addDishe(dishe.getKey(), dishe.getValue());
 		}
@@ -108,23 +123,22 @@ public class Restaurant {
 
 	private void consumeIngredient(Entry<Dishe, Integer> dishe) {
 		// TODO Auto-generated method stub
-		for(Entry<String,Integer> ingredientEntry:dishe.getKey().getRecipe().entrySet()) {
-			Ingredient ingredient=	getIngredientByNameFromStock(ingredientEntry.getKey());
-			if(ingredient!=null)
-			{
-				for(int i=0;i<dishe.getValue();i++) {
-					ingredient.consume(ingredientEntry.getValue());
+		for(Ingredient ingredient:dishe.getKey().getRecipe()) {
+			Ingredient ingredientInStock = getIngredientByNameFromStock(ingredient.getName());
+			if (ingredientInStock != null) {
+				for (int i = 0; i < dishe.getValue(); i++) {
+					ingredientInStock.consume(ingredient.getQuantity());
 				}
-			}			
-		}		
+			}
+		}
 	}
 
 	private Ingredient getIngredientByNameFromStock(String name) {
 		// TODO Auto-generated method stub
-		for(Ingredient ingredient:stockIngredient) {
-			if(ingredient.getName().contains(name)||ingredient.getName().equals(name))return ingredient;
-		}		
+		for (Ingredient ingredient : stockIngredient) {
+			if (ingredient.getName().contains(name) || ingredient.getName().equals(name))
+				return ingredient;
+		}
 		return null;
 	}
-
 }

@@ -10,12 +10,18 @@ public class Ticket {
 		// TODO Auto-generated method stub
 		String disheName = disheWithQuantity.substring(disheWithQuantity.indexOf(" ") + 1);
 		String quantityString = disheWithQuantity.substring(0, disheWithQuantity.indexOf(" "));
+		addDisheToTicket(disheName,quantityString);
+		return this;
+	}
+	
+
+	private void addDisheToTicket(String disheName, String quantityString) {
+		// TODO Auto-generated method stub
 		int quantity = Integer.parseInt(quantityString);
 		Dishe dishe = Restaurant.getDisheByName(disheName);
 		this.dishesOrdred.put(dishe, quantity);
-		return this;
 	}
-
+	
 	public Map<Dishe, Integer> getDishesOrdred() {
 		return dishesOrdred;
 	}

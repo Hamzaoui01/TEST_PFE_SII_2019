@@ -1,6 +1,5 @@
 package sii.maroc;
 
-import org.junit.Assert;
 import org.junit.Test;
 import static org.fest.assertions.api.Assertions.assertThat;
 
@@ -37,8 +36,6 @@ public class RestaurantTest {
          Meal meal = restaurant.retrieve(ticket);       
     }
 // Allowed modification zone ends here
-
-
 
     /**
      * when cooking more than one dish of the same type :
